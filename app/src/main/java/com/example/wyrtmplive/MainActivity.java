@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button stopLive;
     private Button switchCamera;
     private WonderfulPush wonderfulPush;
+    private EditText address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         startLive = findViewById(R.id.startLive);
         stopLive = findViewById(R.id.stopLive);
         switchCamera = findViewById(R.id.switchCamera);
+        address = findViewById(R.id.address);
 
         wonderfulPush = new WonderfulPush(this);
 
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (wonderfulPush.getState() == LiveState.STOP){
                     startLive.setText("暂停");
-                    wonderfulPush.startLive("rtmp://114.55.252.175/wonderful");
+                    wonderfulPush.startLive(address.getText().toString());
                 }else if(wonderfulPush.getState() == LiveState.PAUSE){
                     startLive.setText("暂停");
                     wonderfulPush.liveControl(LiveState.LIVING);
