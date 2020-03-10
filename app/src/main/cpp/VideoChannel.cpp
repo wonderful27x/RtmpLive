@@ -117,14 +117,42 @@ void VideoChannel::encode(int8_t *data) {
             //我的理解是在初始化编码器的时候我们设置了param.b_repeat_headers = 1，
             //因此SPS和PPS对应的NALU单元就是一帧数据的开始，并且是关键帧的开始，所以是四字节
             //参考https://www.jianshu.com/p/0c882eca979c
-            sps_len = nals[i].i_payload - 4;
-            memcpy(sps,nals[i].p_payload + 4,sps_len);
+
+            //当然也可以像sedFrame那样进行判断
+            uint8_t *nal = nals[i].p_payload;
+            //三字节
+            if(nal[2] == 0x01){
+                sps_len = nals[i].i_payload - 3;
+                memcpy(sps,nals[i].p_payload + 3,sps_len);
+            }
+            //四字节
+            else if(nal[2] == 0x00){
+                sps_len = nals[i].i_payload - 4;
+                memcpy(sps,nals[i].p_payload + 4,sps_len);
+            }
+
+//            sps_len = nals[i].i_payload - 4;
+//            memcpy(sps,nals[i].p_payload + 4,sps_len);
         }
         //NALU单元是PPS数据
         else if(nals[i].i_type == NAL_PPS){
             //同上
-            pps_len = nals[i].i_payload - 4;
-            memcpy(pps,nals[i].p_payload + 4,pps_len);
+            //当然也可以像sedFrame那样进行判断
+            uint8_t *nal = nals[i].p_payload;
+            //三字节
+            if(nal[2] == 0x01){
+                pps_len = nals[i].i_payload - 3;
+                memcpy(pps,nals[i].p_payload + 3,pps_len);
+            }
+           //四字节
+            else if(nal[2] == 0x00){
+                pps_len = nals[i].i_payload - 4;
+                memcpy(pps,nals[i].p_payload + 4,pps_len);
+            }
+
+//            pps_len = nals[i].i_payload - 4;
+//            memcpy(pps,nals[i].p_payload + 4,pps_len);
+
             //当得到SPS和PPS是就组合在一起发送出去
             //因为SPS和PPS是紧密连在一起的，所以认为当拿到PPS时SPS也拿到了
             senSpsPps(sps,pps,sps_len,pps_len);
