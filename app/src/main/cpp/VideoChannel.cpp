@@ -8,6 +8,24 @@
  * NALU就是NAL UNIT，nal单元。NAL全称Network Abstract Layer,
  * 即网络抽象层，H.264在网络上传输的结构。一帧图片经过 H.264 编码器之后，
  * 就被编码为一个或多个片（slice），而装载着这些片（slice）的载体，就是 NALU 了 。
+ *
+ * 而每个NALU之间通过startcode（起始码）进行分割，
+ * 起始码分成两种：0x000001（3Byte）或者0x00000001（4Byte）。
+ * 如果NALU对应的Slice为一帧的开始就用0x00000001，否则就用0x000001。
+ *
+ * 每个NALU单元又有SPS、PPS、关键帧与普通帧的区分，
+ * SPS：序列参数集，作用于一系列连续的编码图像。
+ * PPS：图像参数集，作用于编码视频序列中一个或多个独立的图像。
+ * SPS 和 PPS 包含了初始化H.264解码器所需要的信息参数。
+ * IDR：一个序列的第一个图像叫做 IDR 图像（立即刷新图像），IDR 图像都是 I 帧图像。
+ *
+ * 作者：Damon_He
+ * 链接：https://www.jianshu.com/p/0c882eca979c
+ * 来源：简书
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ *
+ *
+ * https://blog.csdn.net/go_str/article/details/80340564?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~first_rank_v2~rank_v25-6-80340564.nonecase&utm_term=%E4%B8%80%E4%B8%AAnal%E5%8D%95%E5%85%83%E6%9C%89%E5%87%A0%E4%B8%AA%E5%9B%BE%E7%89%87%E5%B8%A7&spm=1000.2123.3001.4430
  */
 VideoChannel::VideoChannel() {
     pthread_mutex_init(&encoderMutex, nullptr);

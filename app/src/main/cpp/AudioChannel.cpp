@@ -48,7 +48,7 @@ void AudioChannel::initAudioEncoder(int sampleRate, int channels) {
 
 }
 
-//解码并封装rtmp数据包
+//编码码并封装rtmp数据包
 void AudioChannel::encode(int8_t *data) {
     //编码并返回编码后的数据长度
     int byteLength = faacEncEncode(audioEncoder, reinterpret_cast<int32_t *>(data), inputSamples, outBuff, maxOutputBytes);
