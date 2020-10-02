@@ -103,6 +103,8 @@ void VideoChannel::initVideoEncoder(int width, int height, int fps, int bitRate)
 /**
  * 编码，指针的赋值时跟nv21数据结构有关系的
  * @param data nv21数据
+ *
+ * todo link https://mp.weixin.qq.com/s?__biz=MzAwODM5OTM2Ng==&idx=1&mid=2454862932&sn=245212b661fe8565ad002c93642b1127
  */
 void VideoChannel::encode(int8_t *data) {
     pthread_mutex_lock(&encoderMutex);
